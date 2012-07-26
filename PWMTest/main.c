@@ -52,7 +52,7 @@ void main(void)
 	init();
 	InitPWM();
 	setDir(&car,STOP);
-	setSpeed(&car,128); //50%
+	setSpeed(&car,127); //50%
 
 	__bis_SR_register(GIE);
 	while(1)
