@@ -41,9 +41,9 @@ int setDir(Car* pThis,char dir)
 }
 
 void InitPWM();
+void init(void);
 void ADC_1(void);
 void ADC_2(void);
-void init(void);
 
 unsigned int PWM1_value, PWM2_value;
 Car car;
@@ -51,7 +51,7 @@ void main(void)
 {
 	init();
 	InitPWM();
-	setDir(&car,STOP);
+	setDir(&car,STOP); //STOP Car
 	setSpeed(&car,127); //50%
 
 	__bis_SR_register(GIE);
@@ -59,13 +59,12 @@ void main(void)
 	{
 		ADC_1();
 		ADC_2();
-
 	}
 }
 
 void InitPWM()
 {
-	/*	Initialize the Pins for PWM output (Pin 2) */
+	/*	Initialize the Pins for PWM output (PORT 4) */
 	P4DIR |= BIT3+BIT4+BIT5+BIT6;
 	P4OUT &= ~(BIT3+BIT4+BIT5+BIT6);//Initially LOW
 
@@ -88,29 +87,18 @@ void init(void)
 
 	ADC10CTL0 = ADC10SHT_2 + MSC + ADC10ON + ADC10IE; // Sample Hold Time2, Multiple Seq Channel, ADC10ON, Interrupt Enabled
   	ADC10DTC1 = 0x02;
-  	ADC10AE0 |= 0x07;                         // P2.0, P2.1, and P2.2 ADC option select
-/*  P2DIR |= 0x18;                            // Set P2.3 and P2.4 to output direction for PWM
-  	P2SEL |= 0x18;                            // Select P2.3 and P2.4 for for PWM output
-  	P4DIR |= 0x30;                            // Set P4.4 and P4.5 to output direction for PWM
-  	P4SEL |= 0x30; 							// Select P4.4 and P4.5 for for PWM output
-  	P4DIR |= 0x40; //turns on 4.6 for backward (virtual break)
-  	//int i = 0;*/
+  	ADC10AE0 |= 0x07;                         // P2.0, P2.1, and P2.2 ADC option select (3 ADCs turned on)
   	P1DIR |= 0x03;
 }
 
 void ADC_1(void)
 {
-  	// P1OUT = 0x03;						// Turn on both LED, Ports 11 and 14.
 	ADC10CTL0 &= ~ENC;                      // Disable conversion
 	ADC10CTL1 = INCH_0 + CONSEQ_0;          // Select Channel 0 , Single Channel single conversion
 	ADC10CTL0 |= ENC + ADC10SC;             // Sampling and conversion start
 	while( ADC10CTL1 & ADC10BUSY );         // wait until conversion is done
 	ADC10CTL0 &= ~ENC;
-//	TACCR0 = 760 - 1;                       // PWM Period (760 maximum input from the IR sensor)
-//    TACCTL1 = OUTMOD_7;             		// PWM reset/set
-//    TACCR1 = 760 - ADC10MEM;                // Duty cycle for PWM (closer the range, less the duty cycle)
     PWM1_value = 760 - ADC10MEM;
-//  	TACTL = TASSEL_2 + MC_1;				// Set Timer A Control with UP TO CCRO and SMCLK
 	if ( PWM1_value <= 320)
 	{
 		setDir(&car,FORWARD);
@@ -130,11 +118,7 @@ void ADC_2(void)
 	ADC10CTL0 |= ENC + ADC10SC;             // Sampling and conversion start
 	while( ADC10CTL1 & ADC10BUSY );         // wait until conversion is done
 	ADC10CTL0 &= ~ENC;
-//	TACCR0 = 760 - 1;                       // PWM Period (760 maximum input from the IR sensor)
-//    TACCTL2 = OUTMOD_7;             		// PWM reset/set
-//    TACCR2 = 760 - ADC10MEM;                // Duty cycle for PWM (closer the range, less the duty cycle)
     PWM2_value = 760 - ADC10MEM;
-//  	TACTL = TASSEL_2 + MC_1;				// Set Timer A Control with UP TO CCRO and SMCLK
   	if (PWM2_value <= 500)
   	{
   		P1OUT ^=0x02;
