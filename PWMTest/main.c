@@ -265,7 +265,7 @@ __interrupt void TB1_ISR(void)
 						P4OUT |= BIT5;
 						P4OUT &= ~BIT6;
 						break;
-					case R_LEFT:
+					case R_LEsFT:
 						P4OUT |= BIT6;
 						P4OUT &= ~BIT5;
 						break;
