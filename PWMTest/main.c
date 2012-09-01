@@ -224,8 +224,24 @@ __interrupt void TB1_ISR(void)
 			TBIV = 0x00;
 			break;
 		case FORWARD:
+		case F_RIGHT:
+		case F_LEFT:
 			switch(TBIV)
 			{
+				switch(car.Dir)
+				{
+					case FORWARD:
+						P4OUT &= ~(BIT5 + BIT6);
+						break;
+					case F_RIGHT:
+						P4OUT |= BIT5;
+						P4OUT &= ~BIT6;
+						break;
+					case F_LEFT:
+						P4OUT |= BIT6;
+						P4OUT &= ~BIT5;
+						break;
+				}
 				case 0x02:
 					P4OUT |= BIT3;//BIT6 Goes High
 					P4OUT &= ~BIT4;//BIT7 Stays Low
@@ -236,8 +252,24 @@ __interrupt void TB1_ISR(void)
 			}
 			break;
 		case REVERSE:
+		case R_RIGHT:
+		case R_LEFT:
 			switch(TBIV)
 			{
+				switch(car.Dir)
+				{
+					case REVERSE:
+						P4OUT &= ~(BIT5 + BIT6);
+						break;
+					case R_RIGHT:
+						P4OUT |= BIT5;
+						P4OUT &= ~BIT6;
+						break;
+					case R_LEFT:
+						P4OUT |= BIT6;
+						P4OUT &= ~BIT5;
+						break;
+				}
 				case 0x02:
 					P4OUT |= BIT4;
 					P4OUT &= ~BIT3;
@@ -246,14 +278,6 @@ __interrupt void TB1_ISR(void)
 					P4OUT &= ~(BIT4);
 					break;
 			}
-			break;
-		case F_RIGHT:
-			break;
-		case F_LEFT:
-			break;
-		case R_RIGHT:
-			break;
-		case R_LEFT:
 			break;
 	}
 }
