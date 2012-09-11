@@ -61,7 +61,7 @@ void main(void)
 	init();
 	InitPWM();
 	setDir(&car,STOP); //STOP Car
-	setSpeed(&car,26); //50%
+	setSpeed(&car,6); //50%
 	setLane(&car, 1);
 
 	//DEFINE VARIABLES
@@ -77,15 +77,19 @@ void main(void)
 		ADC2_ = ADC_2();//Left
 		ADC3_ = ADC_3();//Right
 
-		if(ADC1_ > left && ADC1_ > right)//tweak
+		if(ADC1_ > left && ADC1_ > right && ADC1_ > 500)//tweak
 			{
 				if(ADC1_ > forward)
 				{
 					setDir(&car,STOP); //stop to advoid crash
 					if(ADC1_ > 300)
 					{
-						setDir(&car,REVERSE); //back up a little
-						i += 1;
+						while(ADC1_ > 300)
+						{
+							ADC1_ = ADC_1();
+							setDir(&car,REVERSE); //back up a little
+							i += 1;
+						}
 						if(i == 20)
 						{
 							if(ADC2_ > ADC3_) // see which side has space, left or right. This case is for left having less space
@@ -93,6 +97,7 @@ void main(void)
 								while(ADC1_ > 300 || ADC3_ > 200)
 								{
 									ADC1_ = ADC_1();
+									ADC3_ = ADC_3();
 									setDir(&car,R_LEFT);
 								}
 								if(ADC3_ < 300)
@@ -106,6 +111,7 @@ void main(void)
 								while(ADC1_ > 300 || ADC2_ > 200)
 								{
 									ADC1_ = ADC_1();
+									ADC2_ = ADC_2();
 									setDir(&car,R_RIGHT);
 								}
 								if(ADC2_ < 300)
@@ -122,6 +128,10 @@ void main(void)
 				{
 					setDir(&car, FORWARD);
 				}
+			}
+			else if (ADC1_ <250)
+			{
+				setDir(&car, FORWARD);
 			}
 			else if(ADC2_ > left && ADC3_ < right)
 			{
