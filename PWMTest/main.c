@@ -77,70 +77,54 @@ void main(void)
 		ADC2_ = ADC_2();//Left
 		ADC3_ = ADC_3();//Right
 
-		if(1)
-		{
-			if(ADC1_ > forward)
-						{
-							setDir(&car,STOP);
-							if(ADC1_ > 300)
-							{
-								setDir(&car,REVERSE);
-								setDir(&car,STOP);
-							}
-							i += 1;
-							if(i == 20 && j != 5)
-							{
-								setDir(&car,REVERSE);
-								i = 0;
-								//__delay_cycles(50000);
-								//j += 1;
-							}
-		}
-		else
-		{
-			if(ADC2_ < left && ADC3_ < right)//tweak
+
+		if(ADC1_ > left && ADC1_ > right)//tweak
+			{
+				if(ADC1_ > forward)
 				{
-					if(ADC1_ > forward)
+					setDir(&car,STOP);
+					if(ADC1_ > 300)
 					{
+						setDir(&car,REVERSE);
 						setDir(&car,STOP);
-						if(ADC1_ > 300)
-						{
-							setDir(&car,REVERSE);
-							setDir(&car,STOP);
-						}
-						i += 1;
-						if(i == 20 && j != 5)
-						{
-							setDir(&car,REVERSE);
-							i = 0;
-							//__delay_cycles(50000);
-							//j += 1;
-						}
-					/*	else if(j == 5)
+					}
+					i += 1;
+					if(i == 50 && j != 5)
+					{
+						setDir(&car,REVERSE);
+						i = 0;
+						//__delay_cycles(50000);
+						//j += 1;
+					}
+					else if(j == 5)
+					{
+						if(ADC2_ > ADC3_)
 						{
 							setDir(&car,R_LEFT);
+							__delay_cycles(50000);
 							j = 0;
-						}*/
-					}
-					else
-					{
-						setDir(&car, FORWARD);
+						}
 					}
 				}
-				else if(ADC2_ > left && ADC3_ < right)
+				else
 				{
-					setDir(&car, F_LEFT);
+					setDir(&car, FORWARD);
 				}
-				else if(ADC2_ < left && ADC3_ > right)
-				{
-					setDir(&car, F_RIGHT);
-				}
-		}
-
-
-		}
+			}
+			else if(ADC2_ > left && ADC3_ < right)
+			{
+				setDir(&car, F_LEFT);
+			}
+			else if(ADC2_ < left && ADC3_ > right)
+			{
+				setDir(&car, F_RIGHT);
+			}
 	}
+
+
+
 }
+
 
 
 void InitPWM()
