@@ -66,7 +66,7 @@ void main(void)
 
 	//DEFINE VARIABLES
 	int i = 0;
-	int j = 0;
+//	int j = 0;
 	forward = 250;
 	left = 150;
 	right = 150;
@@ -77,34 +77,46 @@ void main(void)
 		ADC2_ = ADC_2();//Left
 		ADC3_ = ADC_3();//Right
 
-
 		if(ADC1_ > left && ADC1_ > right)//tweak
 			{
 				if(ADC1_ > forward)
 				{
-					setDir(&car,STOP);
+					setDir(&car,STOP); //stop to advoid crash
 					if(ADC1_ > 300)
 					{
-						setDir(&car,REVERSE);
-						setDir(&car,STOP);
-					}
-					i += 1;
-					if(i == 50 && j != 5)
-					{
-						setDir(&car,REVERSE);
-						i = 0;
-						//__delay_cycles(50000);
-						//j += 1;
-					}
-					else if(j == 5)
-					{
-						if(ADC2_ > ADC3_)
+						setDir(&car,REVERSE); //back up a little
+						i += 1;
+						if(i == 20)
 						{
-							setDir(&car,R_LEFT);
-							__delay_cycles(50000);
-							j = 0;
+							if(ADC2_ > ADC3_) // see which side has space, left or right. This case is for left having less space
+							{
+								while(ADC1_ > 300 || ADC3_ > 200)
+								{
+									ADC1_ = ADC_1();
+									setDir(&car,R_LEFT);
+								}
+								if(ADC3_ < 300)
+								{
+									setDir(&car,F_RIGHT); // turn RIGHT
+								}
+								i = 0;
+							}
+							else if(ADC3_ > ADC2_) // THIS CASE FOR RIGHT HAVING LESS SPACE
+							{
+								while(ADC1_ > 300 || ADC2_ > 200)
+								{
+									ADC1_ = ADC_1();
+									setDir(&car,R_RIGHT);
+								}
+								if(ADC2_ < 300)
+								{
+									setDir(&car,F_LEFT); //TURN LEFT
+								}
+								i = 0;
+							}
 						}
 					}
+
 				}
 				else
 				{
@@ -120,11 +132,7 @@ void main(void)
 				setDir(&car, F_RIGHT);
 			}
 	}
-
-
-
 }
-
 
 
 void InitPWM()
