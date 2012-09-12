@@ -183,11 +183,6 @@ unsigned int ADC_1()
 	while( ADC10CTL1 & ADC10BUSY );         // wait until conversion is done
 	ADC10CTL0 &= ~ENC;
     ADC1_value = ADC10MEM;
-//	if ( ADC1_value >= 320)
-//	{
-//		setDir(&car,FORWARD);
-//		P1OUT ^=0x02;
-//	}
 	ADC10CTL1 &= ~INCH_0;
 	return ADC1_value;
 }
@@ -202,10 +197,6 @@ unsigned int ADC_2()
 	while( ADC10CTL1 & ADC10BUSY );         // wait until conversion is done
 	ADC10CTL0 &= ~ENC;
     ADC2_value = ADC10MEM;
-  	if (ADC2_value <= 500)
-  	{
-  		//P1OUT ^=0x01;
-  	}
   	ADC10CTL1 &= ~INCH_1;
   	return ADC2_value;
 }
@@ -219,10 +210,6 @@ unsigned int ADC_3()
 	ADC10CTL0 |= ENC + ADC10SC;
 	while( ADC10CTL1 & ADC10BUSY );
     ADC3_value = ADC10MEM;
-  	if (ADC3_value <= 500)
-  	{
-  		//P1OUT ^=0x02;
-  	}
   	ADC10CTL1 &= ~INCH_2;
   	return ADC3_value;
 }
@@ -289,7 +276,7 @@ __interrupt void TB1_ISR(void)
 					P4OUT &= ~BIT3;
 					break;
 				case 0x0E:
-					P4OUT &= ~(BIT4);
+					P4OUT |= BIT3;//P4OUT &= ~(BIT4); //See if this corrects the reverse being super fast
 					break;
 			}
 			break;
