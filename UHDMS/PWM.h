@@ -9,9 +9,9 @@
 #define PWM_H_
 
 #include "Car.h"
-
 Car car;
 
+//Initialize PWM Parameters
 void InitPWM()
 {
 	/*	Initialize the Pins for PWM output (PORT 4) */
@@ -31,7 +31,7 @@ void InitPWM()
 	TBCCTL2 = OUTMOD_6 + CCIE; //Toggle/Set + Interrupt Enable
 }
 
-
+//Interrupt Function for PWM. Requires Car.h for Car related parameters and structures.
 #pragma vector = TIMERB1_VECTOR
 __interrupt void TB1_ISR(void)
 {

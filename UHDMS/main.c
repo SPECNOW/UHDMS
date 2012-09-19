@@ -12,7 +12,8 @@ unsigned int ADC2_ = 0;
 unsigned int ADC3_ = 0;
 unsigned int forward = 0, left = 0, right = 0;
 
-Car car;
+//TODO Create an AI header file and accompanying decision functions to keep main function as abstract as possible.
+
 void main(void)
 {
 	InitADC();
