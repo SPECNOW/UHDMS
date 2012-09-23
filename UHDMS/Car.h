@@ -8,6 +8,9 @@
 #ifndef CAR_H_
 #define CAR_H_
 
+
+#include <stdbool.h>
+
 // Define Direction Macros
 #define STOP 0
 #define FORWARD 1
@@ -19,34 +22,34 @@
 
 //Create a Data Structure for Car Data
 typedef struct{
-	char Speed; //0-255
+	unsigned int Speed; //0-255
 	char Dir; // Use defines above
 	int lane;
 }Car;
 
 //Function to set Car Speed, between 0 and 255 (0x00 and 0xFF). Returns 1 if successful.
-int setSpeed(Car* pThis, char speed)
+bool setSpeed(Car* pThis, char speed)
 {
 	if(speed <= 255)
 	{
-		pThis->Speed = 255 - speed;
-		TBCCR1 = speed << 4;
-		return 1;
+		pThis->Speed = speed;
+		TBCCR1 &= 0x0000;
+		TBCCR1 = (255 - speed) * 16;
+		return true;
 	}
-
-	return 0;
+	return false;
 }
 
 //Function to set Car Direction using the Direction Macros (Defined in Car.h). Returns 1 if successful.
-int setDir(Car* pThis,char dir)
+bool setDir(Car* pThis,char dir)
 {
 	if(dir <= 6)
 	{
 		pThis->Dir = dir;
-		return 1;
+		return true;
 	}
 
-	return 0;
+	return false;
 }
 
 //Function to set Current lane of Car.

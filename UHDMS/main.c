@@ -19,8 +19,11 @@ void main(void)
 	InitADC();
 	InitPWM();
 	setDir(&car,STOP); //STOP Car
-	setSpeed(&car,6); // 0 - 255
+	setSpeed(&car, 100); // 0 - 255
 	setLane(&car, 1);
+	__bis_SR_register(GIE);
+
+//AI CODE *******************
 
 	//DEFINE VARIABLES
 	int i = 0;
@@ -34,8 +37,8 @@ void main(void)
 		ADC1_ = ADC_1();//Forward
 		ADC2_ = ADC_2();//Left
 		ADC3_ = ADC_3();//Right
-
-		if(ADC1_ > left && ADC1_ > right && ADC1_ > 500)//tweak
+		ADC1_ = ADC_1();//Forward
+		/*if(ADC1_ > left && ADC1_ > right && ADC1_ > 500)//tweak
 		{
 			if(ADC1_ > forward)
 			{
@@ -98,6 +101,6 @@ void main(void)
 		else if(ADC2_ < left && ADC3_ > right)
 		{
 			setDir(&car, F_RIGHT);
-		}
+		}*/
 	}
 }
