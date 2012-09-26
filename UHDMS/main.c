@@ -6,6 +6,7 @@
 #include "Car.h"
 #include "ADC.h"
 #include "PWM.h"
+#include "math.h"
 
 unsigned int ADC1_ = 0;
 unsigned int ADC2_ = 0;
@@ -29,14 +30,14 @@ void main(void)
 //AI CODE *******************
 
 	//DEFINE VARIABLES
-	//int i = 0;
+	double i = 0;
 	forward = 405;
 	left = 400;
 	right = 400;
 	__bis_SR_register(GIE);
 	while(1)
 	{
-		//__delay_cycles(100000);
+		//__delay_cycles(10000);
 		ADC1_ = ADC_1();//Forward
 		ADC2_ = ADC_2();//Left
 		ADC3_ = ADC_3();//Right
@@ -44,18 +45,55 @@ void main(void)
 		if( (ADC1_ < forward)) //if no threshold surpassed, drive forward.
 		{
 			setDir(&car,FORWARD);
+
 		}
 		if(ADC2_ > right) // if ADC2 is above threshold, turn left
 		{
 			setDir(&car,F_LEFT);
+
 		}
 		if(ADC3_ > left) // if ADC3 is above threshold, turn right
 		{
 			setDir(&car,F_RIGHT);
+
 		}
 		if( (ADC1_ > forward))
 		{
 			hard_stop(&car);
+			i += 1;
+			if(i == 15)
+			{
+				ADC1_ = ADC_1();//Forward
+				ADC2_ = ADC_2();//Left
+				ADC3_ = ADC_3();//Right
+				if((fabs((double)ADC3_ - (double)ADC2_) <= 125.0))
+				{
+					setDir(&car,R_RIGHT);
+					__delay_cycles(200000);
+					setDir(&car,F_LEFT);
+					__delay_cycles(5000);
+				}
+				else if(ADC2_ > ADC3_)
+				{
+					setDir(&car,R_LEFT);
+					__delay_cycles(200000);
+					setDir(&car,F_RIGHT);
+					__delay_cycles(5000);
+				}
+				else if(ADC3_ > ADC2_)
+				{
+					setDir(&car,R_RIGHT);
+					__delay_cycles(200000);
+					setDir(&car,F_LEFT);
+					__delay_cycles(5000);
+				}
+
+				else
+				{
+					setDir(&car, REVERSE);
+				}
+				i = 0;
+			}
 		}
 		/*else
 		{
