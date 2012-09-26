@@ -58,5 +58,27 @@ void setLane(Car* pThis, int lane)
 	pThis->lane = lane;
 }
 
+void hard_stop(Car* pThis)
+{
+	unsigned int i = 0;
+	if (pThis->Dir == FORWARD || pThis->Dir == F_RIGHT ||pThis->Dir == F_LEFT )
+	{
+		setDir(pThis, STOP);
+		setDir(pThis, REVERSE);
+		while(i != 1000)
+			i += 1;
+		setDir(pThis, STOP);
+	}
+	else if(pThis->Dir == REVERSE || pThis->Dir == R_RIGHT ||pThis->Dir == R_LEFT)
+	{
+		setDir(pThis, STOP);
+		setDir(pThis, FORWARD);
+		while(i != 1000)
+			i += 1;
+		setDir(pThis, STOP);
+	}
+
+}
 
 #endif /* CAR_H_ */
+
