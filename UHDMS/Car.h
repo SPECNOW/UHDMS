@@ -10,6 +10,7 @@
 
 
 #include <stdbool.h>
+#include <math.h>
 
 // Define Direction Macros
 #define STOP 0
@@ -58,14 +59,14 @@ void setLane(Car* pThis, int lane)
 	pThis->lane = lane;
 }
 
-void hard_stop(Car* pThis)
+void hard_stop(Car* pThis, double j)
 {
 	unsigned int i = 0;
 	if (pThis->Dir == FORWARD || pThis->Dir == F_RIGHT ||pThis->Dir == F_LEFT )
 	{
 		setDir(pThis, STOP);
 		setDir(pThis, REVERSE);
-		while(i != 1000)
+		while(i != 1000)//multiple
 			i += 1;
 		setDir(pThis, STOP);
 	}

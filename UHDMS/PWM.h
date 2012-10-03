@@ -60,7 +60,6 @@ __interrupt void TB1_ISR(void)
 			}
 			switch(TBIV)
 			{
-
 				case 0x02:
 					P4OUT |= BIT3;//BIT6 Goes High
 					P4OUT &= ~BIT4;//BIT7 Stays Low
