@@ -58,5 +58,12 @@ unsigned int ADC_3()
   	ADC10CTL1 &= ~INCH_2;
   	return ADC3_value;
 }
-
+unsigned int isClose(unsigned int ADC, unsigned int thresh)
+{
+	if(ADC < thresh)
+	{
+		return 0;
+	}
+	return 1;
+}
 #endif /* ADC_H_ */
