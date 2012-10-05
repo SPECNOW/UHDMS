@@ -24,9 +24,45 @@ void main(void)
 	forward = 405;
 	left = 400;
 	right = 400;
-
+	PS_ = STOP;
 	while(1)
 	{
-		nextState();
+		NS_ = NextState();
+		ND_ = NextDeci(NS_);
+		if(PD_ == ND_)
+		{
+			setDir(&car, ND_);
+			acc_time += 1;
+		}
+		else
+		{
+			if(PS_ == 7 && NS_ == 5)
+			{
+				acc_time += 1;
+				ND_ = PD_;
+				NS_ = PS_;
+			}
+			else if((PD_ == FORWARD || PD_ == F_RIGHT || PD_ == F_LEFT) && ND_ == REVERSE)
+			{
+				//F_val_old = F_val;
+				if(PD_ == ND_ == 7)
+				{
+					hard_stop(&car, acc_time);
+					acc_time = 0;
+				}
+				__delay_cycles(50000);
+				NS_temp = NextState();
+				ND_temp = NextDeci(NS_temp);
+				if (ND_temp == FORWARD)
+				{
+					ND_ = ND_temp;
+					NS_ = NS_temp;
+				}
+			}
+
+		}
+		setDir(&car, ND_);
+		PD_ = ND_;
+		PS_ = NS_;
 	}
 }

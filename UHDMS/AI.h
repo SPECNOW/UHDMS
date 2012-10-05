@@ -21,10 +21,19 @@ unsigned int forward = 0, left = 0, right = 0;
 unsigned int F_temp = 0;
 unsigned int R_temp = 0;
 unsigned int L_temp = 0;
-double j = 0.0;
+double acc_time = 0.0;
 double i = 0;
+unsigned int F_val_old = 0;
+unsigned int R_val_old = 0;
+unsigned int L_val_old = 0;
+unsigned int NS_temp = 0;
+unsigned int ND_temp = 0;
+unsigned int NS_ = 0;
+unsigned int ND_ = 0;
+unsigned int PS_ = 0;
+unsigned int PD_ = 0;
 
-unsigned int nextState()
+unsigned int NextState()
 {
 	F_val = ADC_1();
 	R_val = ADC_2();
@@ -33,17 +42,20 @@ unsigned int nextState()
 	R_ = isClose(R_val, right);//RIGHT
 	L_ = isClose(L_val, left);//LEFT
 
-	if(!L_ && !F_  && !R_) //000
+	return (L_ << 2 | F_ << 1 | R_);
+}
+
+unsigned int NextDeci(unsigned int NS)
+{
+	if(NS == 0) //000
 	{
-		setDir(&car, FORWARD);
-		j += 1.0;
+		return FORWARD;
 	}
-	else if(!L_ && !F_ && R_) //001
+	else if(NS == 1) //001
 	{
-		setDir(&car, F_LEFT);
-		j += 1.0;
+		return F_LEFT;
 	}
-	else if(!L_ && F_  && !R_) //010 = make left or right decision in here
+	else if(NS == 2) //010 = make left or right decision in here
 	{
 		setDir(&car, REVERSE);
 		if(R_val > L_val)
@@ -55,27 +67,26 @@ unsigned int nextState()
 			setDir(&car, F_LEFT);
 		}
 	}
-	else if(!L_ &&  F_ &&  R_) //011
+	else if(NS == 3) //011
 	{
-		setDir(&car, R_RIGHT);
+		return R_RIGHT;
 	}
-	else if(L_ && !F_ && !R_) //100
+	else if(NS == 4) //100
 	{
-		setDir(&car, F_RIGHT);
-		j += 1.0;
+		return F_RIGHT;
 	}
-	else if(L_ && !F_ && R_) //101
+	else if(NS == 5) //101
 	{
-		setDir(&car, FORWARD);
-		j+= 1.0;
+		return FORWARD;
 	}
-	else if(L_ && F_ && !R_) //110
+	else if(NS == 6) //110
 	{
-		setDir(&car, R_LEFT);
+		return R_LEFT;
 	}
-	else if(L_ && F_ && R_) //111
+	else if(NS == 7) //111
 	{
-		i += 1;
+		return REVERSE;
+		/*i += 1;
 		hard_stop(&car, j);
 		j = 0.0;
 		if(i == 15)
@@ -106,7 +117,7 @@ unsigned int nextState()
 				setDir(&car, REVERSE);
 			}
 			i = 0;
-		}
+		}*/
 
 	}
 
