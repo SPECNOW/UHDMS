@@ -18,10 +18,13 @@ unsigned int F_val = 0;
 unsigned int R_val = 0;
 unsigned int L_val = 0;
 unsigned int forward = 0, left = 0, right = 0;
+unsigned int left_lower = 0, right_lower =0;
 unsigned int F_temp = 0;
 unsigned int R_temp = 0;
 unsigned int L_temp = 0;
-double acc_time = 0.0;
+unsigned int acc_time = 0;
+unsigned int hold_time = 0;
+unsigned int hold_time_th = 0;
 double i = 0;
 unsigned int F_val_old = 0;
 unsigned int R_val_old = 0;
@@ -57,14 +60,13 @@ unsigned int NextDeci(unsigned int NS)
 	}
 	else if(NS == 2) //010 = make left or right decision in here
 	{
-		setDir(&car, REVERSE);
 		if(R_val > L_val)
 		{
-			setDir(&car, F_RIGHT);
+			return R_LEFT;
 		}
 		else
 		{
-			setDir(&car, F_LEFT);
+			return R_RIGHT;
 		}
 	}
 	else if(NS == 3) //011
