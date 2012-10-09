@@ -88,39 +88,6 @@ unsigned int NextDeci(unsigned int NS)
 	else if(NS == 7) //111
 	{
 		return REVERSE;
-		/*i += 1;
-		hard_stop(&car, j);
-		j = 0.0;
-		if(i == 15)
-		{
-			if((fabs((double)L_val - (double)R_val) <= 125.0))
-			{
-				setDir(&car,R_RIGHT);
-				__delay_cycles(400000);
-				setDir(&car,F_LEFT);
-				__delay_cycles(10000);
-			}
-			else if(R_val > L_val)
-			{
-				setDir(&car,R_LEFT);
-				__delay_cycles(400000);
-				setDir(&car,F_RIGHT);
-				__delay_cycles(10000);
-			}
-			else if(L_val > R_val)
-			{
-				setDir(&car,R_RIGHT);
-				__delay_cycles(400000);
-				setDir(&car,F_LEFT);
-				__delay_cycles(10000);
-			}
-			else
-			{
-				setDir(&car, REVERSE);
-			}
-			i = 0;
-		}*/
-
 	}
 
 	return 0;
