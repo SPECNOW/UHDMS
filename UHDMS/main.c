@@ -19,7 +19,6 @@ void Init()
 	setDir(&car,STOP); //STOP Car
 	setSpeed(&car, 100); // 0 - 255
 	setLane(&car, 1);
-	__bis_SR_register(GIE);
 
 	forward = 420;
 	left = 420;
@@ -29,4 +28,6 @@ void Init()
 	hold_time_th = 150;
 
 	PS_ = _000;
+
+	__bis_SR_register(GIE);
 }
