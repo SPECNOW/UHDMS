@@ -5,9 +5,8 @@
  *      Author: Charanpreet Parmar
  */
 
-
-#ifndef MAIN_H_
-#define MAIN_H_
+#ifndef UHDMS_H_
+#define UHDMS_H_
 
 #include "msp430x22x4.h"
 #include "Car\Car.h"
@@ -19,4 +18,4 @@
 
 void Init();
 
-#endif /* MAIN_H_ */
+#endif /* UHDMS_H_ */
