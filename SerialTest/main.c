@@ -20,12 +20,3 @@ int main(){
 		}
 	}
 }
-#pragma vector=USCIAB0RX_VECTOR
-__interrupt void USCI0RX_ISR(void)
-{
-	//It looks like Global Static Variables like rx and RXFLAG
-	//can be used in 1 .c file only. Otherwise multiple rxs are created
-	//all with different addresses for some reason...
-	rx= UCA0RXBUF;
-	RXFLAG = true;
-}

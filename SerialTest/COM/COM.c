@@ -7,6 +7,9 @@
 
 #include "COM.h"
 
+char rx;
+bool RXFLAG;
+
 void InitCOM()
 {
 	P3SEL |= 0x30;                            // P3.4,5 = USCI_A0 TXD/RXD
@@ -26,4 +29,13 @@ void printf(char* tx, int length)
 		UCA0TXBUF = tx[pointer];
 		while (!(IFG2 & UCA0TXIFG));
 	}
+}
+#pragma vector=USCIAB0RX_VECTOR
+__interrupt void USCI0RX_ISR(void)
+{
+	//It looks like Global Static Variables like rx and RXFLAG
+	//can be used in 1 .c file only. Otherwise multiple rxs are created
+	//all with different addresses for some reason...
+	rx= UCA0RXBUF;
+	RXFLAG = true;
 }
