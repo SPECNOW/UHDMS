@@ -9,7 +9,7 @@
 #define PWM_H_
 
 #include "..\Car\Car.h"
-static Car car;
+extern Car car;
 
 void InitPWM();
 __interrupt void TB1_ISR(void);

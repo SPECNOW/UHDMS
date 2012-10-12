@@ -12,30 +12,31 @@
 #include "..\Car\Car.h"
 #include "..\PWM\PWM.h"
 
-static bool F_;
-static bool R_;
-static bool L_;
+extern bool F_;
+extern bool R_;
+extern bool L_;
 
-static unsigned int F_val = 0;
-static unsigned int R_val = 0;
-static unsigned int L_val = 0;
+extern unsigned int F_val;
+extern unsigned int R_val;
+extern unsigned int L_val;
 
-static unsigned int forward = 0, left = 0, right = 0;
-static unsigned int left_lower = 0, right_lower =0;
+extern unsigned int forward, left, right;
+extern unsigned int left_lower, right_lower;
 
-static unsigned int acc_time = 0;
-static unsigned int hold_time = 0;
-static unsigned int hold_time_th = 0;
+extern unsigned int acc_time;
+extern unsigned int hold_time;
+extern unsigned int hold_time_th;
 
-static CarState NS_temp = _000;
-static CarDirection ND_temp = STOP;
+extern CarState NS_temp;
+extern CarDirection ND_temp;
 
-static CarState NS_ = _000;
-static CarDirection ND_ = STOP;
+extern CarState NS_;
+extern CarDirection ND_;
 
-static CarState PS_ = _000;
-static CarDirection PD_ = STOP;
+extern CarState PS_;
+extern CarDirection PD_;
 
+extern unsigned int max_speed;
 
 CarState NextState();
 CarDirection NextDeci(CarState NS);

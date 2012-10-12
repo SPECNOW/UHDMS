@@ -8,6 +8,8 @@
 #include "PWM.h"
 #include "..\Car\Car.h"
 
+Car car;
+
 void InitPWM()
 {
 	/*	Initialize the Pins for PWM output (PORT 4) */

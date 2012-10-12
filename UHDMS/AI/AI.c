@@ -7,6 +7,31 @@
 
 #include "AI.h"
 
+bool F_;
+bool R_;
+bool L_;
+
+unsigned int F_val = 0;
+unsigned int R_val = 0;
+unsigned int L_val = 0;
+
+unsigned int forward = 0, left = 0, right = 0;
+unsigned int left_lower = 0, right_lower =0;
+
+unsigned int acc_time = 0;
+unsigned int hold_time = 0;
+unsigned int hold_time_th = 0;
+
+CarState NS_temp = _000;
+CarDirection ND_temp = STOP;
+
+CarState NS_ = _000;
+CarDirection ND_ = STOP;
+
+CarState PS_ = _000;
+CarDirection PD_ = STOP;
+
+unsigned int max_speed =0;
 CarState NextState()
 {
 	F_val = ADC_1();
@@ -33,11 +58,11 @@ CarDirection NextDeci(CarState NS)
 	{
 		if(R_val > L_val)
 		{
-			return R_LEFT;
+			return R_RIGHT;
 		}
 		else
 		{
-			return R_RIGHT;
+			return R_LEFT;
 		}
 	}
 	else if(NS == _011) //011
@@ -63,10 +88,25 @@ CarDirection NextDeci(CarState NS)
 
 	return STOP; //won't get here
 }
+
+
 void StateMachine()
 {
 	NS_ = NextState();
 	ND_ = NextDeci(NS_);
+	/*if(acc_time == 7000)
+	{
+		max_speed = car.Speed;
+		setSpeed(&car, max_speed/2);
+	}
+	else if(acc_time > 7000)
+	{
+		acc_time = 7001;
+	}
+	if(acc_time < 10)
+	{
+		setSpeed(&car, max_speed);
+	}*/
 	if(PD_ == ND_) // no change in direction
 	{
 		setDir(&car, ND_);
@@ -83,7 +123,6 @@ void StateMachine()
 		}
 		else if((PD_ == FORWARD || PD_ == F_RIGHT || PD_ == F_LEFT) && ND_ == REVERSE)// get out of box
 		{
-			//F_val_old = F_val;
 			if(PS_ == 7)
 			{
 				hard_stop(&car, acc_time);
