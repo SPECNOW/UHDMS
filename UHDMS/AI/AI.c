@@ -138,7 +138,7 @@ void StateMachine()
 			acc_time = 0;
 		}
 	}//get out of complete box ends.
-	if((PS_ == 4 || PS_ == 1)  && (NS_ != 5) && (NS_&0x02 !=0x02))
+	if((PS_ == 4 || PS_ == 1)  && (NS_ != 5))
 	{
 		NS_ = PS_;
 		ND_ = PD_;
